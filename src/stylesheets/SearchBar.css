@@ -1,0 +1,29 @@
+.container{
+    max-width: 36%;
+    margin: auto;
+    margin-top: 100px;
+    font-size: 16px;
+}
+
+.form-input{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffff;
+    padding: 15px 40px;
+    outline: none;
+    color: #212121;
+    transition: 0.5s;
+    border-radius: 25px;
+    height: 40px;
+    margin-top: 10px;
+  }
+  
+  .form-input:focus{
+    box-shadow: 0 0 10px 4px #34495e;
+  }
+
+
+  .secondary{
+      margin-top: 10px !important;
+  }
