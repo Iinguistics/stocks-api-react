@@ -1,19 +1,22 @@
 import React from 'react';
 import '../stylesheets/CompanyOverview.css';
 
-class CompanyOverview extends React.Component {
+const CompanyOverview = (props)=> {
  
-    state = {overview: this.props.companyOverviewData}
+  
 
 
 
-   render(){
+   
     return (
-    <div className="container ">
-       {this.state.overview.Symbol}
+    <div className="overview-wrap">
+      <h3>{props.symbol}</h3>
+      <h3>{props.name}</h3>
+      <h3>{props.exchange}</h3>
+      <p>{props.description}</p>
     </div>
     );
-   }
+   
 }
 
 export default CompanyOverview;
