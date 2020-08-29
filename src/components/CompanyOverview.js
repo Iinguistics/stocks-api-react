@@ -30,9 +30,7 @@ const CompanyOverview = (props)=> {
   
         return (
             <div className="overview-wrap">
-              <h3>{props.symbol} {props.name}</h3>
               <h3>{props.asset}</h3>
-              <h3>{props.exchange}</h3>
               {overview()}
               
             </div>
