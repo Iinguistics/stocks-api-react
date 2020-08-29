@@ -1,0 +1,12 @@
+.main-data{
+    max-width: 60%;
+    margin: auto;
+}
+
+
+.main-flex{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

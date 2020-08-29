@@ -9,6 +9,8 @@ const CompanyDescription = (props)=> {
             return (
                 <div className="company-description-wrap">
                    <p>Company overview: {props.description}</p>
+                   <p>Company Contact</p>
+                   <p>{props.address}</p>
                 </div>
                 );
           }else{
