@@ -3,16 +3,31 @@ import '../stylesheets/Header.css';
 
 
 
+
 const Header = (props) =>{
+
+   
+    const fiftyTwo = ()=>{
+        if(props.fiftyTwoHigh !== undefined){
+        return(
+            <div className="flex">
+                <span className="item">${props.currentPrice}</span>
+                <span className="item">52 week high {props.fiftyTwoHigh}</span>
+                <span className="item">52 week low {props.fiftyTwoLow}</span>
+            </div>
+            
+        );
+        }
+    }
+
+
     return(
         <div className="header ui container">
-            <h5>exchange</h5>
-            <p>symbol <span id="name">tesla inc com</span></p>
-            <div className="flex">
-              <span className="item">current price</span>
-              <span className="item">bidsize: 2,216.687</span>
-              <span className="item">ask size: 2217.510</span>
-            </div>
+            <h5>{props.exchange}</h5>
+            <p>{props.symbol} <span id="name">{props.name}</span></p>
+    
+              {fiftyTwo()}
+          
         </div>
     )
 }

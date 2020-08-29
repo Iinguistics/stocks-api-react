@@ -41,11 +41,13 @@ class App extends React.Component {
     return (
       <div className="App">
        <SearchBar onSubmit= {this.onSearchSubmit} />
-       <Header exchange={this.state.COMPANY_OVERVIEW.Exchange} symbol={this.state.COMPANY_OVERVIEW.Symbol} name={this.state.COMPANY_OVERVIEW.Name} currentPrice={this.state.currentPrice} />
+       <Header exchange={this.state.COMPANY_OVERVIEW.Exchange} symbol={this.state.COMPANY_OVERVIEW.Symbol} name={this.state.COMPANY_OVERVIEW.Name} currentPrice={this.state.currentPrice}
+       fiftyTwoHigh={this.state.COMPANY_OVERVIEW["52WeekHigh"]}  fiftyTwoLow={this.state.COMPANY_OVERVIEW["52WeekLow"]}
+       />
        
 
        <CompanyOverview  asset={this.state.COMPANY_OVERVIEW.AssetType} fiftyDay={this.state.COMPANY_OVERVIEW["50DayMovingAverage"]}
-       fiftyTwoHigh={this.state.COMPANY_OVERVIEW["52WeekHigh"]} fiftyTwoLow={this.state.COMPANY_OVERVIEW["52WeekLow"]} analyst={this.state.COMPANY_OVERVIEW.AnalystTargetPrice} dividendDate={this.state.COMPANY_OVERVIEW.DividendDate} dividendPerShare={this.state.COMPANY_OVERVIEW.DividendPerShare} dividendYield={this.state.COMPANY_OVERVIEW.DividendYield}
+       analyst={this.state.COMPANY_OVERVIEW.AnalystTargetPrice} dividendDate={this.state.COMPANY_OVERVIEW.DividendDate} dividendPerShare={this.state.COMPANY_OVERVIEW.DividendPerShare} dividendYield={this.state.COMPANY_OVERVIEW.DividendYield}
        payOutRatio={this.state.COMPANY_OVERVIEW.PayoutRatio} profitMargin={this.state.COMPANY_OVERVIEW.ProfitMargin} quarterlyEarningsGrowth={this.state.COMPANY_OVERVIEW.QuarterlyEarningsGrowthYOY} quarterlyRevenueGrowth={this.state.COMPANY_OVERVIEW.QuarterlyRevenueGrowthYOY} grossProfitTTM={this.state.COMPANY_OVERVIEW.GrossProfitTTM}
        lastSplitDate={this.state.COMPANY_OVERVIEW.LastSplitDate} fullTimeEmployees={this.state.COMPANY_OVERVIEW.FullTimeEmployees}
        
