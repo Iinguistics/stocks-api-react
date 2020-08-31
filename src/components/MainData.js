@@ -1,7 +1,10 @@
 import React from 'react';
 import '../stylesheets/MainData.css'
+import Chart from './Chart';
 
 const MainData = (props)=>{
+
+  
   return(
    <div className="main-data">
     <div className="main-flex">
@@ -10,9 +13,7 @@ const MainData = (props)=>{
      <span className="item">previos close</span>
      <span className="item">volume</span>
     </div>
-    <div id="graph">
-     graph
-    </div>
+    <Chart test={69.69} />
 
    </div>
 

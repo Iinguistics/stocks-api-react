@@ -12,6 +12,7 @@ class App extends React.Component {
               GLOBAL_QUOTE: {},
               currentPrice: "" ,
               CURRENCY_EXCHANGE: {},
+              TIME_SERIES_DAILY: {}
     };
 
  
@@ -21,21 +22,31 @@ class App extends React.Component {
  onSearchSubmit = async (symbol) => {
   const key = 'S6JXB9Q8DEA16WF1';
   // overview call
-  const overviewRes = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${key}`)
-  this.setState({COMPANY_OVERVIEW: overviewRes.data})
+  //const overviewRes = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${key}`)
+  //this.setState({COMPANY_OVERVIEW: overviewRes.data})
   // global quote call for current price
-  const globalRes = await axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`)
-  this.setState({GLOBAL_QUOTE: globalRes.data})
-  console.log(this.state.GLOBAL_QUOTE);
-  this.setState({currentPrice: globalRes.data["Global Quote"]["05. price"]})
+  //const globalRes = await axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`)
+  //this.setState({GLOBAL_QUOTE: globalRes.data})
+  //console.log(this.state.GLOBAL_QUOTE);
+  //this.setState({currentPrice: globalRes.data["Global Quote"]["05. price"]})
 
   // exchange rate call for bid price & ask price, for header comp
-  const exchangeRes = await axios.get(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=USD&to_currency=JPY&apikey=${key}`)
-  this.setState({CURRENCY_EXCHANGE: exchangeRes.data})
-  console.log(this.state.CURRENCY_EXCHANGE);
+  //const exchangeRes = await axios.get(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=USD&to_currency=JPY&apikey=${key}`)
+  //this.setState({CURRENCY_EXCHANGE: exchangeRes.data})
+  //console.log(this.state.CURRENCY_EXCHANGE);
 
+
+  // time series daily
+  const dailyRes = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${key}`)
+  this.setState({TIME_SERIES_DAILY: dailyRes.data})
+  console.log(this.state.TIME_SERIES_DAILY["Time Series (Daily)"]);
+  
+
+  
  }
-
+ 
+ 
+  
  
 
   render(){
