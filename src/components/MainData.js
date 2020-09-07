@@ -1,24 +1,44 @@
 import React from 'react';
 import '../stylesheets/MainData.css'
-import Chart from './Chart';
+import axios from 'axios';
 
-const MainData = (props)=>{
+
+class MainData extends React.Component{
+  constructor(props){
+      super(props);
+   
+   this.state={
+       stockChartXvalues: [],
+       stockChartYvalues: [],
+       symbol: props.symbol
+   }
+
+   console.log(props.symbol)
+  }
+
+ 
+
 
   
-  return(
-   <div className="main-data">
+   
+ 
+  
+  render(){
+   return(
+     <div className="main-data">
     <div className="main-flex">
-     <span className="item">open</span>
+     <span className="item"></span>
      <span className="item">shares outstanding</span>
      <span className="item">previos close</span>
      <span className="item">volume</span>
     </div>
-    <Chart test={69.69} />
+   
 
    </div>
-
-
-  )
+  ) 
+  }
+  
+   
 
 
 

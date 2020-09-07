@@ -5,14 +5,17 @@ import MainData from '../components/MainData';
 import CompanyOverview from'../components/CompanyOverview';
 import CompanyDescription from '../components/CompanyDescription';
 import axios from 'axios';
+import Test from '../components/Test';
 
 class App extends React.Component {
   state = {
+              symbol:"",
               COMPANY_OVERVIEW: {},
               GLOBAL_QUOTE: {},
               currentPrice: "" ,
               CURRENCY_EXCHANGE: {},
-              TIME_SERIES_DAILY: {}
+              TIME_SERIES_DAILY: {},
+            
     };
 
  
@@ -21,50 +24,37 @@ class App extends React.Component {
 
  onSearchSubmit = async (symbol) => {
   const key = 'S6JXB9Q8DEA16WF1';
-  // overview call
-  //const overviewRes = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${key}`)
-  //this.setState({COMPANY_OVERVIEW: overviewRes.data})
-  // global quote call for current price
-  //const globalRes = await axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`)
-  //this.setState({GLOBAL_QUOTE: globalRes.data})
-  //console.log(this.state.GLOBAL_QUOTE);
-  //this.setState({currentPrice: globalRes.data["Global Quote"]["05. price"]})
+  this.setState({symbol: symbol});
+  console.log(this.state.symbol)
 
-  // exchange rate call for bid price & ask price, for header comp
-  //const exchangeRes = await axios.get(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=USD&to_currency=JPY&apikey=${key}`)
-  //this.setState({CURRENCY_EXCHANGE: exchangeRes.data})
-  //console.log(this.state.CURRENCY_EXCHANGE);
-
-
-  // time series daily
-  const dailyRes = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${key}`)
-  this.setState({TIME_SERIES_DAILY: dailyRes.data})
-  console.log(this.state.TIME_SERIES_DAILY["Time Series (Daily)"]);
+ 
   
 
-  
  }
  
- 
   
  
-
   render(){
     return (
       <div className="App">
        <SearchBar onSubmit= {this.onSearchSubmit} />
-       <Header exchange={this.state.COMPANY_OVERVIEW.Exchange} symbol={this.state.COMPANY_OVERVIEW.Symbol} name={this.state.COMPANY_OVERVIEW.Name} currentPrice={this.state.currentPrice}
-       fiftyTwoHigh={this.state.COMPANY_OVERVIEW["52WeekHigh"]}  fiftyTwoLow={this.state.COMPANY_OVERVIEW["52WeekLow"]}
-       />
-       <MainData />
+       <MainData symbol={this.state.symbol} />
 
-       <CompanyOverview  asset={this.state.COMPANY_OVERVIEW.AssetType} fiftyDay={this.state.COMPANY_OVERVIEW["50DayMovingAverage"]}
-       analyst={this.state.COMPANY_OVERVIEW.AnalystTargetPrice} dividendDate={this.state.COMPANY_OVERVIEW.DividendDate} dividendPerShare={this.state.COMPANY_OVERVIEW.DividendPerShare} dividendYield={this.state.COMPANY_OVERVIEW.DividendYield}
-       payOutRatio={this.state.COMPANY_OVERVIEW.PayoutRatio} profitMargin={this.state.COMPANY_OVERVIEW.ProfitMargin} quarterlyEarningsGrowth={this.state.COMPANY_OVERVIEW.QuarterlyEarningsGrowthYOY} quarterlyRevenueGrowth={this.state.COMPANY_OVERVIEW.QuarterlyRevenueGrowthYOY} grossProfitTTM={this.state.COMPANY_OVERVIEW.GrossProfitTTM}
-       lastSplitDate={this.state.COMPANY_OVERVIEW.LastSplitDate} fullTimeEmployees={this.state.COMPANY_OVERVIEW.FullTimeEmployees} 
-       
-       />
-       <CompanyDescription description={this.state.COMPANY_OVERVIEW.Description} address={this.state.COMPANY_OVERVIEW.Address} />
+<Header exchange={this.state.COMPANY_OVERVIEW.Exchange} symbol={this.state.COMPANY_OVERVIEW.Symbol} name={this.state.COMPANY_OVERVIEW.Name} currentPrice={this.state.currentPrice}
+fiftyTwoHigh={this.state.COMPANY_OVERVIEW["52WeekHigh"]}  fiftyTwoLow={this.state.COMPANY_OVERVIEW["52WeekLow"]}
+/>
+
+
+
+
+<CompanyOverview  asset={this.state.COMPANY_OVERVIEW.AssetType} fiftyDay={this.state.COMPANY_OVERVIEW["50DayMovingAverage"]}
+analyst={this.state.COMPANY_OVERVIEW.AnalystTargetPrice} dividendDate={this.state.COMPANY_OVERVIEW.DividendDate} dividendPerShare={this.state.COMPANY_OVERVIEW.DividendPerShare} dividendYield={this.state.COMPANY_OVERVIEW.DividendYield}
+payOutRatio={this.state.COMPANY_OVERVIEW.PayoutRatio} profitMargin={this.state.COMPANY_OVERVIEW.ProfitMargin} quarterlyEarningsGrowth={this.state.COMPANY_OVERVIEW.QuarterlyEarningsGrowthYOY} quarterlyRevenueGrowth={this.state.COMPANY_OVERVIEW.QuarterlyRevenueGrowthYOY} grossProfitTTM={this.state.COMPANY_OVERVIEW.GrossProfitTTM}
+lastSplitDate={this.state.COMPANY_OVERVIEW.LastSplitDate} fullTimeEmployees={this.state.COMPANY_OVERVIEW.FullTimeEmployees} 
+
+/>
+<CompanyDescription description={this.state.COMPANY_OVERVIEW.Description} address={this.state.COMPANY_OVERVIEW.Address} />
+       <Test currentDate={this.state.currentDate}/>
       </div>
     );
   }
