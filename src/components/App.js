@@ -1,64 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import SearchBar from '../components/SearchBar';
 import Header from '../components/Header';
-import MainData from '../components/MainData';
-import CompanyOverview from'../components/CompanyOverview';
-import CompanyDescription from '../components/CompanyDescription';
-import axios from 'axios';
-import Test from '../components/Test';
 
-class App extends React.Component {
-  state = {
-              symbol:"",
-              COMPANY_OVERVIEW: {},
-              GLOBAL_QUOTE: {},
-              currentPrice: "" ,
-              CURRENCY_EXCHANGE: {},
-              TIME_SERIES_DAILY: {},
+
+
+
+const App = ()=> {
+  const [timeSeriesData, setTimeSeriesData] = useState({});
+  const [globalQuoteData, setglobalQuoteData] = useState({});
+  const [overview, setOverview] = useState({});
+
+
+
+
+   const onFormSubmit = async(term)=>{
+         const KEY = 'S6JXB9Q8DEA16WF1';
+        
+         // Global Quote call
+         //const response = await axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${term}&apikey=${KEY}`);
+         //setglobalQuoteData(response.data["Global Quote"]);
+
+         // Company Overview call
+         const response = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${term}&apikey=${KEY}`);
+         setOverview(response.data);
+
+         
+
+        // Time series daily call
+         //const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${term}&apikey=${KEY}`);
+        // setTimeSeriesData(response.data["Time Series (Daily)"]);
+        
+       
+       
             
-    };
-
- 
-    
-
-
- onSearchSubmit = async (symbol) => {
-  const key = 'S6JXB9Q8DEA16WF1';
-  this.setState({symbol: symbol});
-  console.log(this.state.symbol)
-
- 
-  
-
- }
- 
-  
- 
-  render(){
-    return (
-      <div className="App">
-       <SearchBar onSubmit= {this.onSearchSubmit} />
-       <MainData symbol={this.state.symbol} />
-
-<Header exchange={this.state.COMPANY_OVERVIEW.Exchange} symbol={this.state.COMPANY_OVERVIEW.Symbol} name={this.state.COMPANY_OVERVIEW.Name} currentPrice={this.state.currentPrice}
-fiftyTwoHigh={this.state.COMPANY_OVERVIEW["52WeekHigh"]}  fiftyTwoLow={this.state.COMPANY_OVERVIEW["52WeekLow"]}
-/>
-
-
-
-
-<CompanyOverview  asset={this.state.COMPANY_OVERVIEW.AssetType} fiftyDay={this.state.COMPANY_OVERVIEW["50DayMovingAverage"]}
-analyst={this.state.COMPANY_OVERVIEW.AnalystTargetPrice} dividendDate={this.state.COMPANY_OVERVIEW.DividendDate} dividendPerShare={this.state.COMPANY_OVERVIEW.DividendPerShare} dividendYield={this.state.COMPANY_OVERVIEW.DividendYield}
-payOutRatio={this.state.COMPANY_OVERVIEW.PayoutRatio} profitMargin={this.state.COMPANY_OVERVIEW.ProfitMargin} quarterlyEarningsGrowth={this.state.COMPANY_OVERVIEW.QuarterlyEarningsGrowthYOY} quarterlyRevenueGrowth={this.state.COMPANY_OVERVIEW.QuarterlyRevenueGrowthYOY} grossProfitTTM={this.state.COMPANY_OVERVIEW.GrossProfitTTM}
-lastSplitDate={this.state.COMPANY_OVERVIEW.LastSplitDate} fullTimeEmployees={this.state.COMPANY_OVERVIEW.FullTimeEmployees} 
-
-/>
-<CompanyDescription description={this.state.COMPANY_OVERVIEW.Description} address={this.state.COMPANY_OVERVIEW.Address} />
-       <Test currentDate={this.state.currentDate}/>
-      </div>
-    );
   }
+
+  //const timeSeriesDataArr = Object.keys(timeSeriesData);
+  //console.log(timeSeriesDataArr[0]);
+
+  //const dailyQuoteDataArr = Object.keys(globalQuoteData);
   
+  console.log(overview);
+
+
+   return(
+     <div>
+       <SearchBar onFormSubmit={onFormSubmit} />
+       <Header symbol={globalQuoteData["01. symbol"]} current={globalQuoteData["05. price"]} open={globalQuoteData["02. open"]} name={overview.Name} />
+     </div>
+   )
 }
+
+
 
 export default App;
