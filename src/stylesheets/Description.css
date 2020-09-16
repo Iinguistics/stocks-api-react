@@ -1,0 +1,11 @@
+.description{
+    max-width: 70%;
+    margin: auto;
+    margin-top: 35px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.description h5{
+    font-size: 18px;
+}
