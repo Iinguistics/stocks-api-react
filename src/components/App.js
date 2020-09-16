@@ -17,12 +17,15 @@ const App = ()=> {
   const [chartOpenData, setChartOpenData] = useState([]);
   const [chartCloseData, setChartCloseData] = useState([]);
   const [showChart, setShowChart] = useState(false);
-
-
-
+  const [formRan, setFormRan] = useState(false);
+  const [emptyTerm, setEmptyTerm] = useState("");
 
 
    const onFormSubmit = async(term)=>{
+     if(term === ""){
+      setEmptyTerm("Please enter a symbol");
+      return;
+     }
          const KEY = 'S6JXB9Q8DEA16WF1';
          let stockChartOpenValuesFunction = [];
          let stockChartCloseValuesFunction = [];
@@ -53,9 +56,14 @@ const App = ()=> {
           setChartOpenData(stockChartOpenValuesFunction);
           setChartCloseData(stockChartCloseValuesFunction);
           setlabelDateData(stockChartLabelDateValuesFunction);
-    
+      
           setShowChart(true);
+          
+          setFormRan(true);
+          
   }
+
+ 
 
     const chart = ()=>{
         setChartData({
@@ -85,13 +93,15 @@ const App = ()=> {
    
     
      useEffect(()=>{
-      if(chartOpenData !== undefined){
+      if(labelDateData[0] !== undefined){
         chart()
+      }else{
+        setShowChart(false);
       }
-
-
      }, [labelDateData]);
     
+    
+
      const show = ()=>{
       if(showChart === true){
        return (
@@ -101,6 +111,16 @@ const App = ()=> {
         ) 
       }
  }
+
+    const empty = ()=>{
+      return <div className="error"><p>{emptyTerm}</p></div>
+    }
+  
+    const invalidTerm = ()=>{
+      if(formRan === true && labelDateData[0] === undefined){
+        return <div className="error"><p>Please enter a valid symbol.</p></div>
+       }
+     }
     
  
   
@@ -108,6 +128,8 @@ const App = ()=> {
    return(
      <div>
        <SearchBar onFormSubmit={onFormSubmit} />
+       {empty()}
+       {invalidTerm()}
        <Header symbol={globalQuoteData["01. symbol"]} current={globalQuoteData["05. price"]} open={globalQuoteData["02. open"]} name={overview.Name} />
        {show()}
        <Description symbol={overview.Symbol} description={overview.Description} industry={overview.Industry} employees={overview.FullTimeEmployees} split={overview.LastSplitDate} />
