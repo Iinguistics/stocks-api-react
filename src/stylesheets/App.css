@@ -1,10 +1,21 @@
 .chart{
     position: relative;
-    width: 725px ;
-    height: 400px ;
+    width: 725px;
+    height: 400px;
     margin: auto;
 }
 
 .error{
     color: orangered;
+}
+
+
+
+@media(max-width: 767px){
+   
+    .chart{
+        width: 95%;
+        height: 300px ;
+    }
+
 }

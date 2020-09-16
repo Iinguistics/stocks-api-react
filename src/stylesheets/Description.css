@@ -9,3 +9,10 @@
 .description h5{
     font-size: 18px;
 }
+
+
+@media(max-width: 767px) {
+    .description{
+        max-width: 85%;
+    }
+   }
