@@ -35,7 +35,7 @@ const App = ()=> {
          const quoteResponse = await axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${term}&apikey=${KEY}`);
          setglobalQuoteData(quoteResponse.data["Global Quote"]);
 
-         // Company Overview call
+        //  // Company Overview call
          const overviewResponse = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${term}&apikey=${KEY}`);
          setOverview(overviewResponse.data);
 
@@ -60,12 +60,12 @@ const App = ()=> {
          setChartCloseData(stockChartCloseValuesFunction);
          setlabelDateData(stockChartLabelDateValuesFunction);
            
-          setFormRan(true);
+          
           setShowChart(true);
-         }, 1500)
+         }, 2000)
          
           
-
+         setFormRan(true);
           
   }
 
@@ -102,22 +102,24 @@ const App = ()=> {
      useEffect(()=>{
       if(labelDateData[0] !== undefined){
         chart();
-       
+         show();
+        
       }  
       
      }, [labelDateData]);
     
     
-
+      //wrap this function in a setTimeout?
      const show = ()=>{
-      if(showChart === true){
-       return (
-         <div className="chart">
-         <Line data={chartData} options={{ responsive: true }} />
-         </div>
-        ) 
-      }
- }
+          if(showChart === true){
+          return (
+             <div className="chart">
+             <Line data={chartData} options={{ responsive: true }} />
+             </div>
+            )   
+       }
+     } 
+     
 
     const empty = ()=>{
       return <div className="error"><p>{emptyTerm}</p></div>
@@ -130,7 +132,7 @@ const App = ()=> {
          }else{
           return <div></div>
          }
-      },1500) 
+      }, 2000) 
      }
     
  
