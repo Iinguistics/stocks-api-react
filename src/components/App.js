@@ -8,7 +8,6 @@ import '../stylesheets/App.css'
 
 
 
-
 const App = ()=> {
   const [labelDateData, setlabelDateData] = useState([]);
   const [globalQuoteData, setglobalQuoteData] = useState({});
@@ -19,14 +18,16 @@ const App = ()=> {
   const [showChart, setShowChart] = useState(false);
   const [formRan, setFormRan] = useState(false);
   const [emptyTerm, setEmptyTerm] = useState("");
-
+  const [termData ,setTermData]= useState("");
 
    const onFormSubmit = async(term)=>{
+     setTermData(term)
      if(term === ""){
       setEmptyTerm("Please enter a symbol");
       return;
      }
          const KEY = 'S6JXB9Q8DEA16WF1';
+         const KEYTWO = '9B6NPR0OKD5LE1WG';
          let stockChartOpenValuesFunction = [];
          let stockChartCloseValuesFunction = [];
          let stockChartLabelDateValuesFunction = [];
@@ -41,7 +42,7 @@ const App = ()=> {
          
 
         // Time series daily call
-         const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${term}&apikey=${KEY}`);
+         const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${term}&apikey=${KEYTWO}`);
          
          for(let key in response.data["Time Series (Daily)"]){
              stockChartOpenValuesFunction.push(
@@ -53,51 +54,57 @@ const App = ()=> {
            stockChartLabelDateValuesFunction.push(key);
           
          }
-          setChartOpenData(stockChartOpenValuesFunction);
-          setChartCloseData(stockChartCloseValuesFunction);
-          setlabelDateData(stockChartLabelDateValuesFunction);
-      
-          setShowChart(true);
           
+         setTimeout(()=>{
+         setChartOpenData(stockChartOpenValuesFunction);
+         setChartCloseData(stockChartCloseValuesFunction);
+         setlabelDateData(stockChartLabelDateValuesFunction);
+           
           setFormRan(true);
+          setShowChart(true);
+         }, 1500)
+         
+          
+
           
   }
 
  
 
     const chart = ()=>{
-        setChartData({
-        labels: [labelDateData[0], labelDateData[1], labelDateData[2], labelDateData[3], labelDateData[4], labelDateData[5], labelDateData[6], labelDateData[7], labelDateData[8], labelDateData[9]],
-        datasets:[
-          {
-            label: 'open',
-            data: [chartOpenData[0], chartOpenData[1], chartOpenData[2],chartOpenData[3],chartOpenData[4],chartOpenData[5],chartOpenData[6],chartOpenData[7],chartOpenData[8],chartOpenData[9]],
-            backgroundColor: [
-              "#0973A5"
-            ],
-            boderWidth: 4,
-            pointBackgroundColor: "#000"
-          },
-          {
-            label: 'close',
-            data: [chartCloseData[0], chartCloseData[1], chartCloseData[2],chartCloseData[3],chartCloseData[4],chartCloseData[5],chartCloseData[6],chartCloseData[7],chartCloseData[8],chartCloseData[9],],
-            backgroundColor: [
-              '#5C0AF7 '
-            ],
-            boderWidth: 4,
-            pointBackgroundColor:'#A04000'
-          },
-        ]
-      })
+     
+     setChartData({
+          labels: [labelDateData[0], labelDateData[1], labelDateData[2], labelDateData[3], labelDateData[4], labelDateData[5], labelDateData[6], labelDateData[7], labelDateData[8], labelDateData[9]],
+          datasets:[
+            {
+              label: 'open',
+              data: [chartOpenData[0], chartOpenData[1], chartOpenData[2],chartOpenData[3],chartOpenData[4],chartOpenData[5],chartOpenData[6],chartOpenData[7],chartOpenData[8],chartOpenData[9]],
+              backgroundColor: [
+                "#0973A5"
+              ],
+              boderWidth: 4,
+              pointBackgroundColor: "#000"
+            },
+            {
+              label: 'close',
+              data: [chartCloseData[0], chartCloseData[1], chartCloseData[2],chartCloseData[3],chartCloseData[4],chartCloseData[5],chartCloseData[6],chartCloseData[7],chartCloseData[8],chartCloseData[9],],
+              backgroundColor: [
+                '#5C0AF7 '
+              ],
+              boderWidth: 4,
+              pointBackgroundColor:'#A04000'
+            },
+          ]
+        })
     }
    
     
      useEffect(()=>{
       if(labelDateData[0] !== undefined){
-        chart()
-      }else{
-        setShowChart(false);
-      }
+        chart();
+       
+      }  
+      
      }, [labelDateData]);
     
     
@@ -117,9 +124,13 @@ const App = ()=> {
     }
   
     const invalidTerm = ()=>{
-      if(formRan === true && labelDateData[0] === undefined){
-        return <div className="error"><p>Please enter a valid symbol.</p></div>
-       }
+      setTimeout(()=>{
+        if(formRan === true && labelDateData[0] !== undefined){
+          return <div className="error"><p>Please enter a valid symbol.</p></div>
+         }else{
+          return <div></div>
+         }
+      },1500) 
      }
     
  
