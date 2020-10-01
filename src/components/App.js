@@ -18,16 +18,15 @@ const App = ()=> {
   const [showChart, setShowChart] = useState(false);
   const [formRan, setFormRan] = useState(false);
   const [emptyTerm, setEmptyTerm] = useState("");
-  const [termData ,setTermData]= useState("");
 
    const onFormSubmit = async(term)=>{
-     setTermData(term)
      if(term === ""){
       setEmptyTerm("Please enter a symbol");
       return;
      }
          const KEY = 'S6JXB9Q8DEA16WF1';
          const KEYTWO = '9B6NPR0OKD5LE1WG';
+         const KEYTHREE = 'VIC878YP3QLUBAEX';
          let stockChartOpenValuesFunction = [];
          let stockChartCloseValuesFunction = [];
          let stockChartLabelDateValuesFunction = [];
@@ -36,7 +35,7 @@ const App = ()=> {
          setglobalQuoteData(quoteResponse.data["Global Quote"]);
 
         //  // Company Overview call
-         const overviewResponse = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${term}&apikey=${KEY}`);
+         const overviewResponse = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${term}&apikey=${KEYTHREE}`);
          setOverview(overviewResponse.data);
 
          
@@ -60,9 +59,10 @@ const App = ()=> {
          setChartCloseData(stockChartCloseValuesFunction);
          setlabelDateData(stockChartLabelDateValuesFunction);
            
-          
+          chart();
           setShowChart(true);
-         }, 2000)
+          show();
+         }, 3000)
          
           
          setFormRan(true);
@@ -103,9 +103,7 @@ const App = ()=> {
       if(labelDateData[0] !== undefined){
         chart();
          show();
-        
-      }  
-      
+      }   
      }, [labelDateData]);
     
     
