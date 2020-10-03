@@ -16,11 +16,12 @@ const App = ()=> {
   const [chartOpenData, setChartOpenData] = useState([]);
   const [chartCloseData, setChartCloseData] = useState([]);
   const [showChart, setShowChart] = useState(false);
-  const [formRan, setFormRan] = useState(false);
   const [emptyTerm, setEmptyTerm] = useState("");
   const [termData, setTerm] = useState("");
-
-   const onFormSubmit = async(term)=>{
+  const [seriesSymbol, setSeriesSymbol] = useState("");
+  
+  
+   const onFormSubmit = (term)=>{
      if(term === ""){
       setEmptyTerm("Please enter a symbol");
       return;
@@ -33,32 +34,41 @@ const App = ()=> {
          let stockChartLabelDateValuesFunction = [];
 
 
-          // Global Quote call
-          const quoteResponse = await axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${term}&apikey=${KEY}`);
-          setglobalQuoteData(quoteResponse.data["Global Quote"]);
+         // Time series daily call
+         fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${term}&apikey=${KEYTWO}`)
+         .then((res)=> res.json())
+         .then((data)=>{
+           setSeriesSymbol(term)
+           for(let key in data["Time Series (Daily)"]){
+             stockChartOpenValuesFunction.push(
+             data["Time Series (Daily)"][key]["1. open"]
+           ); 
+           stockChartCloseValuesFunction.push(
+             data["Time Series (Daily)"][key]["4. close"]
+           );
+           stockChartLabelDateValuesFunction.push(key);
+         }
+         })
+         .then((data)=>{
+           setChartOpenData(stockChartOpenValuesFunction);
+           setChartCloseData(stockChartCloseValuesFunction);
+           setlabelDateData(stockChartLabelDateValuesFunction);
+         })
 
-
-          // Time series daily call
-          const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${term}&apikey=${KEYTWO}`);
          
-          for(let key in response.data["Time Series (Daily)"]){
-              stockChartOpenValuesFunction.push(
-              response.data["Time Series (Daily)"][key]["1. open"]
-            ); 
-            stockChartCloseValuesFunction.push(
-              response.data["Time Series (Daily)"][key]["4. close"]
-            );
-            stockChartLabelDateValuesFunction.push(key);
-          }
-           
-    
-          setChartOpenData(stockChartOpenValuesFunction);
-          setChartCloseData(stockChartCloseValuesFunction);
-          setlabelDateData(stockChartLabelDateValuesFunction);
-            
-           chart();
+          // // Global Quote call
+          // fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${term}&apikey=${KEY}`)
+          // .then((res)=> res.json())
+          // .then((data)=>{
+          //   setglobalQuoteData(data["Global Quote"]);
+          //   });
+         
+          
+          
+
+
            setShowChart(true);
-           show();
+       
         
         
            // Company Overview call
@@ -66,9 +76,7 @@ const App = ()=> {
           // const overviewResponse = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${term}&apikey=${KEYTHREE}`);
           // setOverview(overviewResponse.data);
         
-         
-          
-         setFormRan(true);    
+             
   }
 
    
@@ -120,14 +128,17 @@ const App = ()=> {
     const empty = ()=>{
       return <div className="error"><p>{emptyTerm}</p></div>
     }
-  
-  
+    
+    const current = chartCloseData[0];
+    const open = chartOpenData[0]
+    console.log(chartCloseData);
+ 
 
      return(
       <div>
         <SearchBar onFormSubmit={onFormSubmit} />
         {empty()}
-        <Header symbol={termData} current={globalQuoteData["05. price"]} open={globalQuoteData["02. open"]} name={overview.Name} />
+        <Header symbol={seriesSymbol} current={current} open={open} />
         {show()}
       </div>
     )     

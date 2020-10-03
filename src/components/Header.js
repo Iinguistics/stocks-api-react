@@ -4,7 +4,7 @@ import '../stylesheets/Header.css';
 
 
 
-const Header = ({ symbol, current, open, name }) =>{
+const Header = ({ symbol, current, open }) =>{
 
 
    const diff = ()=>{
@@ -31,12 +31,12 @@ const Header = ({ symbol, current, open, name }) =>{
 
 
    const headData = ()=>{
-       if(name !== undefined){
+       if(current !== undefined){
          
            return (
                <div>
                 <span>{symbol}</span>
-                <span>{name}</span>
+                
                 <br />
                 <span>${current}</span>
                  <span className={`${current > open ? 'green' : 'red' }`}>{diff()}</span>
