@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import SearchBar from '../components/SearchBar';
 import Header from '../components/Header';
-import Description from '../components/Description';
+//import Description from '../components/Description';
 import '../stylesheets/App.css'
 
 
@@ -18,58 +18,64 @@ const App = ()=> {
   const [showChart, setShowChart] = useState(false);
   const [formRan, setFormRan] = useState(false);
   const [emptyTerm, setEmptyTerm] = useState("");
+  const [termData, setTerm] = useState("");
 
    const onFormSubmit = async(term)=>{
      if(term === ""){
       setEmptyTerm("Please enter a symbol");
       return;
      }
+     setTerm(termData);
          const KEY = 'S6JXB9Q8DEA16WF1';
          const KEYTWO = '9B6NPR0OKD5LE1WG';
-         const KEYTHREE = 'VIC878YP3QLUBAEX';
          let stockChartOpenValuesFunction = [];
          let stockChartCloseValuesFunction = [];
          let stockChartLabelDateValuesFunction = [];
-         // Global Quote call
-         const quoteResponse = await axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${term}&apikey=${KEY}`);
-         setglobalQuoteData(quoteResponse.data["Global Quote"]);
 
-        //  // Company Overview call
-         const overviewResponse = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${term}&apikey=${KEYTHREE}`);
-         setOverview(overviewResponse.data);
 
+          // Global Quote call
+          const quoteResponse = await axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${term}&apikey=${KEY}`);
+          setglobalQuoteData(quoteResponse.data["Global Quote"]);
+
+
+          // Time series daily call
+          const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${term}&apikey=${KEYTWO}`);
          
-
-        // Time series daily call
-         const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${term}&apikey=${KEYTWO}`);
-         
-         for(let key in response.data["Time Series (Daily)"]){
-             stockChartOpenValuesFunction.push(
-             response.data["Time Series (Daily)"][key]["1. open"]
-           );
-           stockChartCloseValuesFunction.push(
-             response.data["Time Series (Daily)"][key]["4. close"]
-           );
-           stockChartLabelDateValuesFunction.push(key);
-          
-         }
-          
-         setTimeout(()=>{
-         setChartOpenData(stockChartOpenValuesFunction);
-         setChartCloseData(stockChartCloseValuesFunction);
-         setlabelDateData(stockChartLabelDateValuesFunction);
+          for(let key in response.data["Time Series (Daily)"]){
+              stockChartOpenValuesFunction.push(
+              response.data["Time Series (Daily)"][key]["1. open"]
+            ); 
+            stockChartCloseValuesFunction.push(
+              response.data["Time Series (Daily)"][key]["4. close"]
+            );
+            stockChartLabelDateValuesFunction.push(key);
+          }
            
-          chart();
-          setShowChart(true);
-          show();
-         }, 3000)
+    
+          setChartOpenData(stockChartOpenValuesFunction);
+          setChartCloseData(stockChartCloseValuesFunction);
+          setlabelDateData(stockChartLabelDateValuesFunction);
+            
+           chart();
+           setShowChart(true);
+           show();
+        
+        
+           // Company Overview call
+          // const KEYTHREE = 'VIC878YP3QLUBAEX';
+          // const overviewResponse = await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${term}&apikey=${KEYTHREE}`);
+          // setOverview(overviewResponse.data);
+        
          
           
-         setFormRan(true);
-          
+         setFormRan(true);    
   }
 
- 
+   
+  useEffect(()=>{
+     chart()
+     show()
+   }, [labelDateData]);
 
     const chart = ()=>{
      
@@ -98,16 +104,8 @@ const App = ()=> {
         })
     }
    
+
     
-     useEffect(()=>{
-      if(labelDateData[0] !== undefined){
-        chart();
-         show();
-      }   
-     }, [labelDateData]);
-    
-    
-      //wrap this function in a setTimeout?
      const show = ()=>{
           if(showChart === true){
           return (
@@ -123,29 +121,16 @@ const App = ()=> {
       return <div className="error"><p>{emptyTerm}</p></div>
     }
   
-    const invalidTerm = ()=>{
-      setTimeout(()=>{
-        if(formRan === true && labelDateData[0] !== undefined){
-          return <div className="error"><p>Please enter a valid symbol.</p></div>
-         }else{
-          return <div></div>
-         }
-      }, 2000) 
-     }
-    
- 
   
 
-   return(
-     <div>
-       <SearchBar onFormSubmit={onFormSubmit} />
-       {empty()}
-       {invalidTerm()}
-       <Header symbol={globalQuoteData["01. symbol"]} current={globalQuoteData["05. price"]} open={globalQuoteData["02. open"]} name={overview.Name} />
-       {show()}
-       <Description symbol={overview.Symbol} description={overview.Description} industry={overview.Industry} employees={overview.FullTimeEmployees} split={overview.LastSplitDate} />
-     </div>
-   )
+     return(
+      <div>
+        <SearchBar onFormSubmit={onFormSubmit} />
+        {empty()}
+        <Header symbol={termData} current={globalQuoteData["05. price"]} open={globalQuoteData["02. open"]} name={overview.Name} />
+        {show()}
+      </div>
+    )     
 }
 
 
