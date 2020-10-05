@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import SearchBar from '../components/SearchBar';
 import Header from '../components/Header';
@@ -10,24 +10,20 @@ import '../stylesheets/App.css'
 
 const App = ()=> {
   const [labelDateData, setlabelDateData] = useState([]);
-  const [globalQuoteData, setglobalQuoteData] = useState({});
-  const [overview, setOverview] = useState({});
+ // const [globalQuoteData, setglobalQuoteData] = useState({});
+ // const [overview, setOverview] = useState({});
   const [chartData, setChartData] = useState({});
   const [chartOpenData, setChartOpenData] = useState([]);
   const [chartCloseData, setChartCloseData] = useState([]);
   const [showChart, setShowChart] = useState(false);
-  const [emptyTerm, setEmptyTerm] = useState("");
   const [termData, setTerm] = useState("");
   const [seriesSymbol, setSeriesSymbol] = useState("");
+  const [formRan, setFormRan] = useState(false);
   
   
-   const onFormSubmit = (term)=>{
-     if(term === ""){
-      setEmptyTerm("Please enter a symbol");
-      return;
-     }
-     setTerm(termData);
-         const KEY = 'S6JXB9Q8DEA16WF1';
+  const onFormSubmit = (term)=>{
+     setTerm(term);
+        // const KEY = 'S6JXB9Q8DEA16WF1';
          const KEYTWO = '9B6NPR0OKD5LE1WG';
          let stockChartOpenValuesFunction = [];
          let stockChartCloseValuesFunction = [];
@@ -66,9 +62,9 @@ const App = ()=> {
           
           
 
-
+           setFormRan(true);
            setShowChart(true);
-       
+           
         
         
            // Company Overview call
@@ -111,9 +107,11 @@ const App = ()=> {
           ]
         })
     }
+
+    const current = chartCloseData[0];
+    const open = chartOpenData[0]
    
 
-    
      const show = ()=>{
           if(showChart === true){
           return (
@@ -125,19 +123,35 @@ const App = ()=> {
      } 
      
 
-    const empty = ()=>{
-      return <div className="error"><p>{emptyTerm}</p></div>
-    }
     
-    const current = chartCloseData[0];
-    const open = chartOpenData[0]
-    console.log(chartCloseData);
+    const invalidTerm = () =>{
+      if(formRan === true && current === undefined && termData !== ""){
+        return (
+          <div className="error">
+            <p>Please enter a valid symbol</p>
+          </div>
+        )
+      }
+    }
+
+
+    const empty = ()=>{
+      if(formRan === true && termData === ""){
+        return (
+        <div className="error">
+          <p>Please enter a symbol</p>
+        </div>
+        )
+      }
+     }
+  
  
 
      return(
       <div>
         <SearchBar onFormSubmit={onFormSubmit} />
         {empty()}
+        {invalidTerm()}
         <Header symbol={seriesSymbol} current={current} open={open} />
         {show()}
       </div>
